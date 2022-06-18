@@ -1,7 +1,11 @@
 import http from 'http';
 import { getPrdocuts, getProduct, createProduct, updateProduct, removeProduct } from './controllers/productController.js';
+import 'dotenv/config';
 
-const server = http.createServer((req, res) => {
+
+const Port = process.env.PORT;
+
+export const server = http.createServer((req, res) => {
     if (req.url === '/api/users' && req.method === 'GET') {
         getPrdocuts(req, res)
     } else if (req.url.match(/\/api\/users\/([0-z]+)/) && req.method === 'GET'){
@@ -24,6 +28,7 @@ const server = http.createServer((req, res) => {
     
 })
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || Port || 5000;
 
 server.listen(PORT, ()=> console.log(`Server running on port ${PORT}`))
+

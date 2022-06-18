@@ -1,4 +1,5 @@
 import {find, findById, create, update, remove } from '../models/productModel.js';
+import { v4 as uuidv4, validate } from 'uuid';
 
 export const getPrdocuts = async (req, res)=> {
     try{ 
@@ -14,10 +15,13 @@ export const getPrdocuts = async (req, res)=> {
 export const getProduct = async (req, res, id)=> {
     try{ 
         const product = await findById(id);
-
-        if(!product) {
+        
+        if(validate(id) === false) {
+            res.writeHead(400, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify({message: 'UUID is not correct'}))
+        } else if(!product) {
             res.writeHead(404, {'Content-Type': 'application/json'})
-            res.end(JSON.stringify({message: 'Product not found'}))
+            res.end(JSON.stringify({message: 'User does not exist'}))
         } else {
             res.writeHead(200, {'Content-Type': 'application/json'})
             res.end(JSON.stringify(product))
@@ -33,27 +37,30 @@ export const createProduct = async (req, res)=> {
         let body  = '';
         req.on('data', (chunk)=> {
             body += chunk.toString()
-            console.log(body)
+           
         })
 
         req.on('end', async ()=> {
-            console.log(JSON.parse(body))
-            const { title, description, price} = JSON.parse(body)
-
-            const product = {
-                title,
-                description,
-                price
+            
+            const { name, age, hobbies} = JSON.parse(body)
+            if (name === undefined || age === undefined || hobbies === undefined) {
+                res.writeHead(400, { 'Content-type': 'application/json'})
+                res.end(JSON.stringify({message: 'body does not contain required fields'}))
+            } else {
+                const product = {
+                    name,
+                    age,
+                    hobbies
+                }
+            
+                const newProduct = await create(product);
+                res.writeHead(201, { 'Content-type': 'application/json'})
+                return res.end(JSON.stringify(newProduct))
             }
-
-            const newProduct = await create(product);
-
-            res.writeHead(201, { 'Content-type': 'application/json'})
-            return res.end(JSON.stringify(newProduct))
-        })
-
-        
-    } catch(e){
+            
+                
+            
+        })} catch(e){
          console.log(e)
     }
 }
@@ -61,25 +68,28 @@ export const createProduct = async (req, res)=> {
 export const updateProduct = async (req, res, id)=> {
     const product = await findById(id);
     try{  
-        if(!product) {
+        if(validate(id) === false) {
+            res.writeHead(400, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify({message: 'UUID is not correct'}))
+        } else if (!product){
             res.writeHead(404, {'Content-Type': 'application/json'})
-            res.end(JSON.stringify({message: 'Product not found'}))
+            res.end(JSON.stringify({message: 'User does not exist'}))
         } else {
             
                 let body  = '';
                 req.on('data', (chunk)=> {
                     body += chunk.toString()
-                    console.log(body)
+                    
                 })
         
                 req.on('end', async ()=> {
-                    console.log(JSON.parse(body))
-                    const { title, description, price} = JSON.parse(body)
+                   
+                    const { name, age, hobbies} = JSON.parse(body)
         
                     const productData = {
-                        title: title || product.title,
-                        description: description || product.description,
-                        price: price || product.price
+                        name: name || product.name,
+                        age: age || product.age,
+                        hobbies: hobbies || product.hobbies
                     }
         
                     const updProduct = await update(id, productData);
@@ -98,13 +108,15 @@ export const updateProduct = async (req, res, id)=> {
 export const removeProduct = async (req, res, id)=> {
     try{ 
         const product = await findById(id);
-
-        if(!product) {
+        if(validate(id) === false) {
+            res.writeHead(400, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify({message: 'UUID is not correct'}))
+        } else if(!product) {
             res.writeHead(404, {'Content-Type': 'application/json'})
-            res.end(JSON.stringify({message: 'Product not found'}))
+            res.end(JSON.stringify({message: 'User not found'}))
         } else {
             await remove(id);
-            res.writeHead(200, {'Content-Type': 'application/json'})
+            res.writeHead(204, {'Content-Type': 'application/json'})
             res.end(JSON.stringify({message: `Product ${id} removed`}))
         }
         
