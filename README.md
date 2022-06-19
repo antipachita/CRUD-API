@@ -4,6 +4,9 @@
 #### GET      /api/users/id
 #### PUT      /api/users/id
 #### DELETE   /api/users/id
+#### For example :
+#### http://localhost:5000/api/users with "GET" returns all users
+
 
 # Usage
 #### npm install
