@@ -17,5 +17,8 @@
 # Run in production
 #### npm run start:prod
 
+# Run Tests
+#### npm run test
+
 # Run horizontal scaling
 #### npm run start:multi
