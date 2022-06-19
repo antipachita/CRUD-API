@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "mocha",
-    "start:prod": "node server.js",
-    "start:dev": "nodemon server.js",
-    "start:multi": "node cluster.js"
+    "start:prod": "node --experimental-json-modules server.js",
+    "start:dev": "nodemon --experimental-json-modules server.js",
+    "start:multi": "node --experimental-json-modules cluster.js"
   },
   "repository": {
     "type": "git",
