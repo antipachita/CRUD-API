@@ -1,6 +1,13 @@
 # Routes
 #### GET      /api/users
 #### POST     /api/users
+```
+{
+    "name": "Alex",
+    "age": 41,
+    "hobbies": ['Cars', 'music']
+}
+```
 #### GET      /api/users/id
 #### PUT      /api/users/id
 #### DELETE   /api/users/id
