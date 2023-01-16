@@ -6,9 +6,9 @@
   "type": "commonjs",
   "scripts": {
     "test": "mocha",
-    "npm run start:dev": "tsc && node ./dist/server.js",
+    "start:dev": "tsc && node ./dist/server.js",
     "build": "tsc",
-    "npm run start:prod": "nodemon ./src/server.ts",
+    "start:prod": "nodemon ./src/server.ts",
     "start:multi": "tsc && node ./dist/cluster.js"
   },
   "repository": {
