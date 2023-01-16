@@ -1,6 +1,6 @@
 import chai from "chai";
 import chaiHttp from 'chai-http';
-import {server} from '../server.js';
+import {server} from '../dist/server.js';
 
 process.env.NODE_ENV = 'test';
 chai.use(chaiHttp);
